@@ -11,7 +11,7 @@ ninja = pygame.image.load("recursos/ninja.png")
 fundo = pygame.image.load("recursos/fundo.png")
 fundoStart = pygame.image.load("recursos/fundoStart.jpg")
 fundoDead = pygame.image.load("recursos/fundoDead.png")
-fundoCachaca = pygame.image.load("recursos/fundoCachaca")
+fundoCachaca = pygame.image.load("recursos/fundoCachaca.png")
 
 cachaca = pygame.image.load("recursos/cachaca.png")
 moeda = pygame.image.load("recursos/moeda.png")
@@ -50,7 +50,7 @@ def jogar(nome):
 
     posicaoXCachaca = 400
     posicaoYCachaca = -240
-    velocidadeCachaca = 1.5
+    velocidadeCachaca = 2
     larguaCachaca  = 112
     alturaCachaca  = 112
 
@@ -165,8 +165,10 @@ def deadCachaca(nome, pontos):
         buttonStart = pygame.draw.rect(tela, preto, (35,482,750,100),0)
         textoStart = fonteStart.render("",True, branco)
         tela.blit(textoStart, (400,482))
-        textoEnter = fonte.render("Ninja entrou em coma alcoólico, aperte ENTER e tente novamente...", True, vermelho)
-        tela.blit(textoEnter, (60,482))
+        textoEnter = fonte.render("Ninja entrou em coma alcoólico,", True, vermelho)
+        textoOutro = fonte.render("aperte ENTER e tente novamente...", True, vermelho)
+        tela.blit(textoEnter, (50,482))
+        tela.blit(textoOutro, (50,514))
         pygame.display.update()
         relogio.tick(60)
 
