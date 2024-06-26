@@ -31,8 +31,17 @@ pygame.mixer.music.load("recursos/musica.mp3")
 branco = (255,255,255)
 preto = (0, 0 ,0 )
 vermelho = (160,0,0)
+amarelo = (225,225,0)
+
+
+
 
 def jogar(nome):
+    posicao_circulo = (50, 50)
+    raio_circulo = 10
+    raio_min = 10
+    raio_max = 50
+    incremento_raio = 1
     pygame.mixer.Sound.play(moedaSound)
     pygame.mixer.music.play(-1)
     pygame.mixer.Sound.play(cachacaSound)
@@ -90,6 +99,13 @@ def jogar(nome):
             
         tela.fill(branco)
         tela.blit(fundo, (0,0) )
+    
+        pygame.draw.circle(tela, amarelo, posicao_circulo, raio_circulo)
+
+        raio_circulo += incremento_raio
+        if raio_circulo >= raio_max or raio_circulo <= raio_min:
+            incremento_raio = -incremento_raio
+
         #pygame.draw.circle(tela, preto, (posicaoXNinja,posicaoYNinja), 40, 0 )
         tela.blit( ninja, (posicaoXNinja, posicaoYNinja) )
         
@@ -120,8 +136,6 @@ def jogar(nome):
         tela.blit( moeda, (posicaoXMoeda, posicaoYMoeda) )
         tela.blit( cachaca, (posicaoXCachaca, posicaoYCachaca) )
 
-        pygame.draw.circle((400,300),3)
-
         
         texto = fonte.render(nome+"- Pontos: "+str(pontos), True, branco)
         tela.blit(texto, (10,10))
@@ -148,19 +162,18 @@ def jogar(nome):
         if  len( list( set(pixelsViaturaY).intersection(set(pixelsNinjaY))) ) > dificuldade:
             if len( list( set(pixelsViaturaX).intersection(set(pixelsNinjaX))   ) )  > dificuldade:
                 coma(nome, pontos)
-                        
-        
-    
-        
+
+               
         pygame.display.update()
         relogio.tick(60)
+
+
 
 
 def dead(nome, pontos):
     pygame.mixer.music.stop()
     pygame.mixer.Sound.play(morteSound) 
 
-    
     jogadas  = {}
     try:
         arquivo = open("historico.txt","r",encoding="utf-8")
@@ -175,7 +188,7 @@ def dead(nome, pontos):
     arquivo.write(str(jogadas))
     arquivo.close()
 
-    
+
     while True:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
