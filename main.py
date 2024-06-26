@@ -50,10 +50,9 @@ def jogar(nome):
 
     posicaoXCachaca = 400
     posicaoYCachaca = -240
-    velocidadeCachaca = 2
+    velocidadeCachaca = 1.5
     larguaCachaca  = 112
     alturaCachaca  = 112
-
 
     while True:
         for evento in pygame.event.get():
@@ -166,7 +165,7 @@ def deadCachaca(nome, pontos):
         buttonStart = pygame.draw.rect(tela, preto, (35,482,750,100),0)
         textoStart = fonteStart.render("",True, branco)
         tela.blit(textoStart, (400,482))
-        textoEnter = fonte.render("Ninja entrou em coma alcoólico, precione ENTER e tente novamente...", True, vermelho)
+        textoEnter = fonte.render("Ninja entrou em coma alcoólico, aperte ENTER e tente novamente...", True, vermelho)
         tela.blit(textoEnter, (60,482))
         pygame.display.update()
         relogio.tick(60)
