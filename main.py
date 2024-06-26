@@ -120,6 +120,8 @@ def jogar(nome):
         tela.blit( moeda, (posicaoXMoeda, posicaoYMoeda) )
         tela.blit( cachaca, (posicaoXCachaca, posicaoYCachaca) )
 
+        pygame.draw.circle((400,300),3)
+
         
         texto = fonte.render(nome+"- Pontos: "+str(pontos), True, branco)
         tela.blit(texto, (10,10))
