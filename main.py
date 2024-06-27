@@ -1,5 +1,6 @@
 import os, random, pygame
 from tkinter import simpledialog
+from funcoes import limparTela
 
 pygame.init()
 
@@ -10,6 +11,7 @@ fundo = pygame.image.load("recursos/fundo.png")
 fundoStart = pygame.image.load("recursos/fundoStart.jpg")
 fundoDead = pygame.image.load("recursos/fundoDead.png")
 fundoComa = pygame.image.load("recursos/fundoComa.png")
+
 
 moeda = pygame.image.load("recursos/moeda.png")
 cachaca = pygame.image.load("recursos/cachaca.png")
@@ -32,8 +34,6 @@ branco = (255,255,255)
 preto = (0, 0 ,0 )
 vermelho = (160,0,0)
 amarelo = (225,225,0)
-
-
 
 
 def jogar(nome):
@@ -102,11 +102,10 @@ def jogar(nome):
     
         pygame.draw.circle(tela, amarelo, posicao_circulo, raio_circulo)
 
-        raio_circulo += incremento_raio
+        raio_circulo = raio_circulo + incremento_raio
         if raio_circulo >= raio_max or raio_circulo <= raio_min:
-            incremento_raio = -incremento_raio
+             incremento_raio = -incremento_raio
 
-        #pygame.draw.circle(tela, preto, (posicaoXNinja,posicaoYNinja), 40, 0 )
         tela.blit( ninja, (posicaoXNinja, posicaoYNinja) )
         
         posicaoYMoeda = posicaoYMoeda + velocidadeMoeda
@@ -167,7 +166,45 @@ def jogar(nome):
         pygame.display.update()
         relogio.tick(60)
 
+def coma(nome, pontos):
+    pygame.mixer.music.stop()
+    pygame.mixer.Sound.play(comaSound) 
 
+    
+    jogadas  = {}
+    try:
+        arquivo = open("historico.txt","r",encoding="utf-8")
+        jogadas = eval(arquivo.read())
+        arquivo.close()
+    except:
+        arquivo = open("historico.txt","w",encoding="utf-8")
+        arquivo.close()
+ 
+    jogadas[nome] = pontos   
+    arquivo = open("historico.txt","w",encoding="utf-8") 
+    arquivo.write(str(jogadas))
+    arquivo.close()
+
+    
+    while True:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                quit()
+            elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN:
+                jogar(nome)
+
+            elif evento.type == pygame.MOUSEBUTTONDOWN:
+                if buttonStart.collidepoint(evento.pos):
+                    jogar(nome)
+        tela.fill(branco)
+        tela.blit(fundoComa, (0,0))
+        buttonStart = pygame.draw.rect(tela, preto, (35,482,750,100),0)
+        textoStart = fonte.render("O Ninja sofreu um coma alcoólico. ", True, branco)
+        tela.blit(textoStart, (60,480))
+        textoEnter = fonte.render("Pressione ENTER para vomitar a cachaça...", True, branco)
+        tela.blit(textoEnter, (60,520))
+        pygame.display.update()
+        relogio.tick(60)
 
 
 def dead(nome, pontos):
@@ -211,45 +248,7 @@ def dead(nome, pontos):
 
 
 
-def coma(nome, pontos):
-    pygame.mixer.music.stop()
-    pygame.mixer.Sound.play(comaSound) 
 
-    
-    jogadas  = {}
-    try:
-        arquivo = open("historico.txt","r",encoding="utf-8")
-        jogadas = eval(arquivo.read())
-        arquivo.close()
-    except:
-        arquivo = open("historico.txt","w",encoding="utf-8")
-        arquivo.close()
- 
-    jogadas[nome] = pontos   
-    arquivo = open("historico.txt","w",encoding="utf-8") 
-    arquivo.write(str(jogadas))
-    arquivo.close()
-
-    
-    while True:
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                quit()
-            elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN:
-                jogar(nome)
-
-            elif evento.type == pygame.MOUSEBUTTONDOWN:
-                if buttonStart.collidepoint(evento.pos):
-                    jogar(nome)
-        tela.fill(branco)
-        tela.blit(fundoComa, (0,0))
-        buttonStart = pygame.draw.rect(tela, preto, (35,482,750,100),0)
-        textoStart = fonte.render("O Ninja sofreu um coma alcoólico. ", True, branco)
-        tela.blit(textoStart, (60,480))
-        textoEnter = fonte.render("Pressione ENTER para vomitar a cachaça...", True, branco)
-        tela.blit(textoEnter, (60,520))
-        pygame.display.update()
-        relogio.tick(60)
 
 
 def ranking():
